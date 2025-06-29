@@ -62,3 +62,54 @@ function ej1() {
     }
     document.getElementById("output").innerText = "Consulta la consola para ver los resultados.";
   }
+
+  // 6. Stock de Papá Noel
+function ej6() {
+    let stock = prompt("¿Cuántos regalos tienes en total? (ej: 250)");
+    stock = parseInt(stock);
+    if (isNaN(stock) || stock <= 0) {
+      alert("Cantidad no válida.");
+      return;
+    }
+  
+    const output = document.getElementById("output");
+    output.innerHTML = `
+      <h3>🎁 Stock de Papá Noel</h3>
+      <p>Regalos disponibles: <strong id="regalos">${stock}</strong></p>
+      <input type="number" id="repartidos" placeholder="¿Cuántos has repartido hoy?" class="form-control" style="width: 250px;">
+      <button onclick="repartirRegalos()" style="margin-top: 10px;">📦 Repartir</button>
+      <p id="mensaje" style="margin-top: 1rem; font-weight: bold;"></p>
+    `;
+  
+    // Hacemos accesible la variable stock y función a nivel global
+    window.repartirRegalos = function () {
+      const repartidos = parseInt(document.getElementById("repartidos").value);
+      const mensaje = document.getElementById("mensaje");
+  
+      if (isNaN(repartidos) || repartidos <= 0) {
+        mensaje.textContent = "Introduce un número válido de regalos repartidos.";
+        return;
+      }
+  
+      stock -= repartidos;
+      const spanRegalos = document.getElementById("regalos");
+  
+      if (stock > 0) {
+        spanRegalos.textContent = stock;
+        mensaje.textContent = "";
+  
+        if (stock < 100) {
+          mensaje.textContent = "⚠️ ¡Ojo, quedan menos de 100 regalos!";
+          mensaje.style.color = "orange";
+        } else {
+          mensaje.style.color = "black";
+        }
+  
+      } else {
+        spanRegalos.textContent = 0;
+        mensaje.innerHTML = "🎉 ¡Misión cumplida! Hasta el año que viene 🎄";
+        mensaje.style.color = "green";
+        document.getElementById("repartidos").disabled = true;
+      }
+    };
+  }
